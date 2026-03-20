@@ -21,13 +21,15 @@ def get_card_prices(card_name):
     
     results = []
     for p in all_prints:
-        results.append({
-            "set_name": p.get('set_name'),
-            "set_code": p.get('set'),
-            "prices": p.get('prices'),
-            "released_at": p.get('released_at'),
-            "uri": p.get('scryfall_uri')
-        })
+        prices = p.get('prices', {})
+        if any(price for price in prices.values()):
+            results.append({
+                "set_name": p.get('set_name'),
+                "set_code": p.get('set'),
+                "prices": prices,
+                "released_at": p.get('released_at'),
+                "uri": p.get('scryfall_uri')
+            })
     
     return jsonify({
         "card_name": base_data.get('name'),
